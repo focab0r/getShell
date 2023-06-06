@@ -28,15 +28,15 @@
 	  getShell -v 9443
 	  getShell cat /tmp/flag.txt
 ``` 
-- `-h`: Display this help and exit
+- `-h`: Display this help and exit.
 - `-i`: Allows you to specify an IP and a PORT, and create a reverse Shell in that language.
-- `-v`: Launch the command `nc -nlvp $PORT`, waiting for entries
-- `ELSE`: If no options is detected, it will assume it is a command, and will display the execution of it in various languages.
+- `-v`: Launch the command `nc -nlvp $PORT`, waiting for entries.
+- `ELSE`: If no option is detected, it will assume it is a command, and will display the execution of it in various languages.
 
 ## Plus ##
 As I have been using the tool, I have added different utilities, that, although they are not related to the main function of **getShell**, save some time.
 - `-t`: Show the networks interfaces with the IP (not including docker)
-- `-p`: Send a ping request to github, and print if there is Internet connection
+- `-p`: Send a ping request to github, and print if there is an Internet connection
 
 ## Examples ##
 
