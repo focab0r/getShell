@@ -58,6 +58,15 @@ The other options can be seen below:
 
 ![Other options](images/c.png)
 
+## Installation ##
+```
+$ curl https://raw.githubusercontent.com/focab0r/getShell/main/getShell > getShell
+
+$ sudo mv getShell /usr/local/bin
+
+$ sudo chmod 755 /usr/local/bin/getShell
+```
+
 ## Warnings ##
 - When adding a command as a parameter, remember to use `"` if the command contains `|`,`&` or `;`. Otherwise it is not necessary.
 ```
@@ -68,3 +77,6 @@ $ getShell curl http://10.10.15.46:9443
 
 ## Bugs and improvements ##
 You are welcome to add bugs and improvements through the "Issues" tab. I will be adding more languages as I have more time.
+
+## References ##
+Some parts of the code are from [GTFOBins](https://gtfobins.github.io/) and [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings).
