@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# [Version=1.0.0
+# [Version=1.0.1
 
 #### COLORS ####
 
@@ -38,8 +38,7 @@ printHelp()
 	  -i   -->  Specify IP and PORT
 	  -v   -->  Open a listening port using netcat
 	  -t   -->  List interfaces
-	  -p   -->  Send a ping to github.com
-	  -x   -->  Update getShell 
+	  -p   -->  Send a ping to github.com 
 	  Else -->  Specify a command
 		  
 	EXAMPLES:
@@ -176,10 +175,10 @@ then
 		echo -e "[*] ERROR: Specify a port to open\n"
 		exit 1
 	fi
-elif [ "$1" == '-x' ];
-then
-	curl https://raw.githubusercontent.com/focab0r/getShell/main/getShell > /tmp/getShellUPDATED
-	sudo mv /tmp/getShellUPDATED ./getShell
+#elif [ "$1" == '-x' ];
+#then
+#	curl https://raw.githubusercontent.com/focab0r/getShell/main/getShell > /tmp/getShellUPDATED
+#	sudo mv /tmp/getShellUPDATED ./getShell
 elif [ "$1" == '-i' ];
 then
 	IP=$2

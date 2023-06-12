@@ -21,7 +21,6 @@
 	  -v   -->  Open a listening port using netcat
 	  -t   -->  List interfaces
 	  -p   -->  Send a ping to github.com 
-	  -x   -->  Update getShell
 	  Else -->  Specify a command
 		  
 	EXAMPLES:
@@ -32,7 +31,6 @@
 - `-h`: Display this help and exit.
 - `-i`: Allows you to specify an IP and a PORT, and create a reverse Shell in that language.
 - `-v`: Launch the command `nc -nlvp $PORT`, waiting for entries.
-- `-x`: Update the script from GitHub
 - `ELSE`: If no option is detected, it will assume it is a command, and will display the execution of it in various languages.
 
 ## Plus ##
