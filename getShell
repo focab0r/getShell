@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# [Version=1.0.1
+# [Version=1.0.3
 
 #### COLORS ####
 
@@ -24,7 +24,7 @@ printBanner()
  \___  / \___  /|__| /_______  /___|  /\___  /____/____/
 /_____/      \/              \/     \/     \/           
 
-	Version: 1.0.2 		Author: focab0r
+	Version: 1.0.3 		Author: focab0r
 '
 }
 
@@ -180,7 +180,7 @@ elif [ "$1" == '-x' ];
 then
 	curl https://raw.githubusercontent.com/focab0r/getShell/main/getShell > /tmp/getShellUPDATED
 	DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
-	echo $DIR
+	echo "Writing the script in: $DIR"
 	sudo mv /tmp/getShellUPDATED $DIR/getShell
 	chmod 755 $DIR/getShell
 	exit 0
