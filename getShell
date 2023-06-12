@@ -24,7 +24,7 @@ printBanner()
  \___  / \___  /|__| /_______  /___|  /\___  /____/____/
 /_____/      \/              \/     \/     \/           
 
-	Version: 1.0.1 		Author: focab0r
+	Version: 1.0.2 		Author: focab0r
 '
 }
 
@@ -39,6 +39,7 @@ printHelp()
 	  -v   -->  Open a listening port using netcat
 	  -t   -->  List interfaces
 	  -p   -->  Send a ping to github.com 
+	  -x   -->  Update getShell 
 	  Else -->  Specify a command
 		  
 	EXAMPLES:
@@ -175,10 +176,14 @@ then
 		echo -e "[*] ERROR: Specify a port to open\n"
 		exit 1
 	fi
-#elif [ "$1" == '-x' ];
-#then
-#	curl https://raw.githubusercontent.com/focab0r/getShell/main/getShell > /tmp/getShellUPDATED
-#	sudo mv /tmp/getShellUPDATED ./getShell
+elif [ "$1" == '-x' ];
+then
+	curl https://raw.githubusercontent.com/focab0r/getShell/main/getShell > /tmp/getShellUPDATED
+	DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
+	echo $DIR
+	sudo mv /tmp/getShellUPDATED $DIR/getShell
+	chmod 755 $DIR/getShell
+	exit 0
 elif [ "$1" == '-i' ];
 then
 	IP=$2
